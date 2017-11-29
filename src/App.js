@@ -47,7 +47,7 @@ render() {
             ? <div>Geolocation is not enabled</div>
             :  this.props.coords ?
         <button onClick={(event) => this.enterCoordinates()}>
-          Calculate Address
+          Calculate Address , Accuracy {this.props.coords.accuracy}
         </button>
         : <div> Getting Location Data</div>
         }
