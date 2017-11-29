@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 import {geolocated} from 'react-geolocated';
 import './App.css';
 
@@ -18,7 +16,9 @@ componentDidMount() {
    var input = document.getElementById('searchTextField');
    var options = {
      bounds: this.getOptions(),
-     types: ['establishment']
+     types: ['address'],
+     componentRestrictions: {country: 'il'},
+     strictbounds: true
    };
    this.autocomplete = new window.google.maps.places.Autocomplete(input, options);
 }
