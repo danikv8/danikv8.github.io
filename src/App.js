@@ -8,7 +8,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      address: '',
+      address: [],
       free_address: ''
     };
   }
@@ -25,7 +25,8 @@ enterCoordinates() {
   }}, (results, status) => {
     if (status === 'OK') {
       if (results[0]) {
-        this.setState({address: results[0].formatted_address})
+        console.log(results)
+        this.setState({address: results.filter(result => result.types.includes('street_address'))})
       } else {
         window.alert('No results found');
       }
@@ -51,9 +52,13 @@ render() {
         </button>
         : <div> Getting Location Data</div>
         }
-      <div>
-        {this.state.address}
-      </div>
+      <ul>
+        {this.state.address.map(address => {
+        return (<li key={address.formatted_address}> 
+          {address.formatted_address} 
+          </li>)
+        })}
+      </ul>
       </div>
       <div>
         <p>
