@@ -35,6 +35,16 @@ enterCoordinates() {
   }})
 }
 
+getOptions() {
+  console.log(this.props.coords)
+  if(this.props.coords)
+    return {
+      location: new window.google.maps.LatLng(this.props.coords.latitude, this.props.coords.longtitude),
+      radius: this.props.coords.accuracy,
+      types: ['address']
+    }
+}
+
 render() {
   return (
     <div>
@@ -64,11 +74,11 @@ render() {
         <p>
           Enter Address
         </p>
-        <PlacesAutocomplete 
+        <PlacesAutocomplete
+          options={{...this.getOptions()}}
           inputProps={{
             onChange: (address) => this.setState({free_address: address}),
-            value: this.state.free_address,
-            types: ['address']  
+            value: this.state.free_address
         }}/>
         <div>
         </div>
