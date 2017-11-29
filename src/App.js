@@ -15,6 +15,12 @@ class App extends Component {
 
 componentDidMount() {
    this.geocoder = new window.google.maps.Geocoder()
+   var input = document.getElementById('searchTextField');
+   var options = {
+     bounds: this.getOptions(),
+     types: ['establishment']
+   };
+   this.autocomplete = new window.google.maps.places.Autocomplete(input, options);
 }
 
 enterCoordinates() {
@@ -36,12 +42,13 @@ enterCoordinates() {
 }
 
 getOptions() {
-  console.log(this.props.coords)
-  if(this.props.coords)
-    return {
-      location: new window.google.maps.LatLng(this.props.coords.latitude, this.props.coords.longtitude),
-      radius: this.props.coords.accuracy,
-      types: ['address']
+  if(this.props.coords) {
+     return new window.google.maps.Circle({
+        center: {
+          lat: this.props.coords.latitude,
+          lng: this.props.coords.longtitude
+        },
+        radius: this.props.coords.accuracy + 100})
     }
 }
 
@@ -74,14 +81,7 @@ render() {
         <p>
           Enter Address
         </p>
-        <PlacesAutocomplete
-          options={{...this.getOptions()}}
-          inputProps={{
-            onChange: (address) => this.setState({free_address: address}),
-            value: this.state.free_address
-        }}/>
-        <div>
-        </div>
+        <input id="searchTextField" type="text" size="50" placeholder="Anything you want!" />
       </div>
     </div>
     );
@@ -90,7 +90,7 @@ render() {
 
 export default geolocated({
   positionOptions: {
-    enableHighAccuracy: false,
+    enableHighAccuracy: true,
   },
   userDecisionTimeout: 5000,
   })(App);
