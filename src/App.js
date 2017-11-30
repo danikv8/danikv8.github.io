@@ -15,12 +15,15 @@ componentDidMount() {
    this.geocoder = new window.google.maps.Geocoder()
    var input = document.getElementById('searchTextField');
    var options = {
-     bounds: this.getOptions(),
      types: ['address'],
-     componentRestrictions: {country: 'il'},
-     strictbounds: true
-   };
+     strictBounds: true
+   }
    this.autocomplete = new window.google.maps.places.Autocomplete(input, options);
+}
+
+componentWillReceiveProps(nextProps) {
+  if(this.autocomplete)
+    this.autocomplete.setBounds(this.getOptions(nextProps))
 }
 
 enterCoordinates() {
@@ -41,15 +44,14 @@ enterCoordinates() {
   }})
 }
 
-getOptions() {
-  if(this.props.coords) {
+getOptions(nextProps) {
+  if(nextProps.coords)
      return new window.google.maps.Circle({
         center: {
-          lat: this.props.coords.latitude,
-          lng: this.props.coords.longtitude
+          lat: nextProps.coords.latitude,
+          lng: nextProps.coords.longitude
         },
-        radius: this.props.coords.accuracy + 100})
-    }
+        radius: nextProps.coords.accuracy + 1000}).getBounds()
 }
 
 render() {
